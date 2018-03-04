@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="style.css" rel="css/bootstrap.min.css">
+    <link href="style.css" rel="stylesheet">
+  </head>
+  <body>
+    <div id="mySidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <!--  <form action="#">
+        <input id="search" placeholder="Search…" type="search" data-bind="value: query, valueUpdate: 'keyup'" autocomplete="on">
+      </form>
+      <ul data-bind="template: {name:'location', foreach:locations}"></ul>
+      <script type="text/html" id="location">
+        <li>
+          <strong data-bind="text: title"></strong>
+        </li>
+      </script> -->
+      <label for="filter">Filter:</label>
+<input id="filter" type="text" data-bind="textInput: filter"/>
+              <ul data-bind="foreach: visibleLocations">
+           <li class="markers_info"> <a href="#" data-bind="text: title"> </a></li>
+        </ul>
+    </div>
+    <div id="open" onclick="openNav()"> click to open </div>
+    <div id="map" class="container-fluid" ></div>
+
+    <!--<script src="js/bootstrap.min.js"></script> -->
+    <script src="js/jQuery.js"></script>
+    <script src= "js/knockout-3.4.2.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.2.0/knockout-min.js"></script>
+    <script src="main.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDFNK3U4QmmwNFdOCsyPA1Q-TF5ccABEg&callback=initMap"></script>
+  </body>
+</html>
