@@ -1,5 +1,12 @@
 
 var map;
+var   locations = [
+  { title:'Safa and Marwa', location: {lat: 21.42394, lng: 39.82762}},
+  { title:'Great Mosque of Mecca', location: {lat: 21.422889, lng: 39.825718}},
+  { title:'Abraj Al Bait', location: {lat: 21.418674, lng: 39.824946}},
+  { title:'Al Baik', location: {lat: 21.421111, lng: 39.821706}},
+  { title:'Zamzam Well', location: {lat: 21.424068, lng: 39.831808}}
+];
 var markers =[];
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
@@ -9,13 +16,7 @@ function initMap() {
 
 //$(function() {
 
-  locations = [
-  { title:'Safa and Marwa', location: {lat: 21.42394, lng: 39.82762}},
-  { title:'Great Mosque of Mecca', location: {lat: 21.422889, lng: 39.825718}},
-  { title:'Abraj Al Bait', location: {lat: 21.418674, lng: 39.824946}},
-  { title:'Al Baik', location: {lat: 21.421111, lng: 39.821706}},
-  { title:'Zamzam Well', location: {lat: 21.424068, lng: 39.831808}}
-];
+
 
 /*function Item(title) {
     this.title = ko.observable(title);
@@ -132,6 +133,7 @@ var defaultIcon = 'http://1.bp.blogspot.com/_GZzKwf6g1o8/S6xwK6CSghI/AAAAAAAAA98
 var highLightedIcon = 'http://maps.google.com/mapfiles/ms/icons/blue.png';
 }
 
+//function to populate info window with title and wiki url using AJAX
 function populateInfoWindow(marker, infowindow) {
 
   var wikiURL = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' + marker.title + '&format=json&callback=wikiCallback';
@@ -165,7 +167,7 @@ function openNav() {
    document.getElementById("mySidenav").style.width = "250px";
 }
 
-/* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
+// Set the width of the side navigation to 0 and the left margin of the page content to 0
 function closeNav() {
    document.getElementById("mySidenav").style.width = "0";
 }
@@ -191,16 +193,14 @@ function closeNav() {
   //  return new Item(item.title, item.location, item.marker);
 //});
 
+// using knockout to make a live search
  function ViewModel(){
   var self =this;
   this.filter = ko.observable();
 
-  this.locations = ko.observableArray([{ title:'Safa Bridge',location: {lat: 21.42394, lng: 39.82762}},
-  { title:'Holy Mosque', location: {lat: 21.422889, lng: 39.825718}},
-  { title:'Diamond Tower', location: {lat: 21.418674, lng: 39.824946}},
-  { title:'Albaik Resturant', location: {lat: 21.421111, lng: 39.821706}},
-  { title:'Zamzam', location: {lat: 21.424068, lng: 39.831808}}]);
-  /*for (var i=0; i<locations.length; i++)
+  this.locations = ko.observableArray(locations);
+  this.markers = ko.observableArray(markers);
+    /*for(var location in locations)
   {
     var position = locations[i].location;
     var title = locations[i].title;
@@ -212,12 +212,22 @@ function closeNav() {
     animation: google.maps.Animation.DROP,
     id: i
   });
-}*/
+
+  self.filter.subscribe(function (filterValue) {
+      self.locations.forEach(function (location) {
+          var matches =
+              !filterValue ||
+              location.title.toLowerCase().indexOf(filterValue.toLowerCase()) !== -1;
+          location.marker.setMap(matches ? self.map : null);
+      });
+  });*/
   this.visibleLocations = ko.computed(function(){
        return this.locations().filter(function(location){
            if(!self.filter() || location.title.toLowerCase().indexOf(self.filter().toLowerCase()) !== -1)
              return location;
-
+             location.marker.setMap(matches ? self.map : null);
+             //this.location.marker.setVisible(true);
+        //     marker.setVisible(true);
        });
    },this);
 
