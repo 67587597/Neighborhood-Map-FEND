@@ -8,13 +8,14 @@ var locations = [
 ];
 var markers =[];
 
+// intialiate map
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 21.422871, lng: 39.825735},
     zoom: 15
   });
   var largeInfowindow = new google.maps.InfoWindow();
-  //var bounds = new google.maps.LatLngBounds();
+
   for (var i=0; i<locations.length; i++)
   {
     var position = locations[i].location;
@@ -29,7 +30,7 @@ function initMap() {
     });
 
     markers.push(marker);
-    //bounds.extend(marker.position);
+
     marker.addListener('click', function()
     {
       populateInfoWindow(this, largeInfowindow);
@@ -50,87 +51,34 @@ function initMap() {
   //set highlited icon
   var highLightedIcon = 'http://maps.google.com/mapfiles/ms/icons/blue.png';
 
-  function click()
-  {
-   document.getElementById("markers_info")
-   var item    = document.createElement('div');
-
-      item.innerHTML='Marker#'+(++i);
-       item.onmouseover.populateInfoWindow(this, largeInfowindow);
-
-  };
-/*  function clickFunction()
-  {
-    var element = document.getElementById("markers_info");
-    element.addListener('click', function()
-    {
-      this.setIcon(highLightedIcon);
-        element.populateInfoWindow(this, largeInfowindow);
-
-    });
-  }
-
-$(document).ready(function() {
-     // make a .hover event
-  $('#markers_info .marker').hover(
-       // mouse in
-       function () {
-         // first we need to know which <div class="marker"></div> we hovered
-         var index = $('#markers_info .marker').index(this);
-         markers[index].setIcon(highlightedIcon);
-       },
-       // mouse out
-       function () {
-         // first we need to know which <div class="marker"></div> we hovered
-         var index = $('.markers_info').index(this);
-         markers[index].setIcon(defaultIcon);
-       }
-     );
-   });
-  /*     $("#markers_info ul li").on('mouseenter', function(){
-            var index = $('.markers_info').index(this);
-            markers[index].setIcon(alternateMarkers[id]);
-        }).on('mouseleave', function(){
-            var index = $('.markers_info').index(this);
-            markers[index].setIcon(markersIcon[id]);
-        });
-        gmarkers.push(marker);
-  // add a line to the side_bar html
-  var marker_num = gmarkers.length-1;
-  side_bar_html += '<a href="javascript:myclick(' + marker_num + ')" onmouseover="gmarkers['+marker_num+'].setIcon(defaultIcon)" onmouseout="gmarkers['+marker_num+'].setIcon(highLightedIcon)">' + name + '<\/a><br>';
-
-var i = 0,
-    sidebar = document.getElementById('.markers_infor');
-var item    = document.createElement('div');
-    item.innerHTML='Marker#'+(++i);
-    item.marker=new google.maps.Marker({/});
-    item.onmouseover=function(){this.marker.setAnimation(google.maps.Animation.BOUNCE);};
-    item.onmouseout=function(){this.marker.setAnimation(null);};
-    sidebar.appendChild(item);
-*/
-//create the live search
+//create the live search of list of location and thier markers
   function ViewModel()
   {
     var self =this;
     this.filter = ko.observable();
     this.locations = ko.observableArray(markers);
 
-    // this.markers = ko.observableArray(markers);
-    this.visibleLocations = ko.computed(function()
+//make some animation when click on map elements
+    self.markerlistAnimation = function(location) {
+        location.setAnimation(google.maps.Animation.BOUNCE);
+        populateInfoWindow(this, largeInfowindow);
+        setTimeout(function () {
+          location.setAnimation(null);
+        }, 1400);
+    }
+
+      this.visibleLocations = ko.computed(function()
     {
       return this.locations().filter(function(location)
       {
         if(!self.filter() || location.title.toLowerCase().indexOf(self.filter().toLowerCase()) !== -1){
           location.setVisible(true);
-
-
-          //marker.populateInfoWindow(this, largeInfowindow);
           return location;
 
         } else {
           location.setVisible(false);
         }
-          });
+      });
     },this);
   }
   ko.applyBindings(new ViewModel());
@@ -175,4 +123,4 @@ function openNav()
 function closeNav()
 {
  document.getElementById("mySidenav").style.width = "0";
-};
+}
